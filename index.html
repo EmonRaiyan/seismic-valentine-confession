@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Seismic Valentine</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- ══ Welcome Modal ══ -->
+  <div class="modal-overlay" id="welcomeModal">
+    <div class="welcome-modal">
+      <img class="modal-logo" src="logo.png" alt="Seismic" />
+      <h2 class="modal-title">Seismic Valentine<br/>Confession Board</h2>
+      <p class="modal-subtitle">
+        This Valentine's, say what you've never had the courage to say.<br/>
+        To your crush, your friend, or that special someone in the community —<br/>
+        anonymous or not, your heart deserves to speak. 💌
+      </p>
+      <button class="btn btn-primary" onclick="document.getElementById('welcomeModal').classList.add('hidden')">
+        Let's Begin ✦
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ Main App ══ -->
+  <div class="page-wrapper">
+
+    <!-- Site Header -->
+    <header class="site-header">
+      <div class="header-logo-row">
+        <img src="logo.png" alt="Seismic" class="header-logo-img" />
+        <h1 class="site-title">Seismic Valentine</h1>
+      </div>
+      <p class="site-tagline">Community CRUSH & Confession Board</p>
+
+      <div class="header-tabs">
+        <button class="tab-btn active" onclick="showSection('submit', this)">
+          ✦ Add Confession
+        </button>
+        <button class="tab-btn" onclick="showSection('feed', this)">
+          ❤ View Feed
+        </button>
+      </div>
+    </header>
+
+    <!-- ══ Submit Section ══ -->
+    <section class="page-section active" id="section-submit">
+
+      <div class="form-header">
+        <h2>Write your confession</h2>
+        <p>Say what your heart has been holding. It will appear in the community feed.</p>
+      </div>
+
+      <!-- Success -->
+      <div id="successMessage" class="banner-success hidden">
+        <span style="font-size:1.4rem">💖</span>
+        <div>
+          <strong>Confession sent!</strong>
+          <p>Your message is now live in the feed.</p>
+        </div>
+      </div>
+
+      <form id="confessionForm" novalidate>
+
+        <!-- Mode -->
+        <div class="form-card">
+          <p class="form-card-title">Posting mode</p>
+          <div class="mode-grid">
+            <label class="mode-opt">
+              <input type="radio" name="mode" value="anonymous" checked/>
+              <div class="mode-opt-inner">
+                <span class="mode-icon">🕶️</span>
+                <div>
+                  <strong>Anonymous</strong>
+                  <small>No personal info saved</small>
+                </div>
+              </div>
+            </label>
+            <label class="mode-opt">
+              <input type="radio" name="mode" value="public"/>
+              <div class="mode-opt-inner">
+                <span class="mode-icon">🌊</span>
+                <div>
+                  <strong>Public</strong>
+                  <small>Show your name or tag</small>
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Your info -->
+        <div class="form-card" id="userInfoSection" style="display:none;">
+          <p class="form-card-title">About you <span class="opt">(optional)</span></p>
+          <div class="field">
+            <label>Your name</label>
+            <input type="text" id="userName" placeholder="enter your name" maxlength="50" autocomplete="off"/>
+          </div>
+          <div class="field">
+            <label>Your MAG tag</label>
+            <input type="text" id="userMag" placeholder="enter you mag 1-9" maxlength="60" autocomplete="off"/>
+          </div>
+        </div>
+
+        <!-- Target -->
+        <div class="form-card">
+          <p class="form-card-title">Who is this for?</p>
+          <div class="field">
+            <label>Their name <span class="req">*</span></label>
+            <input type="text" id="targetName" placeholder="enter his / her name" required maxlength="80" autocomplete="off"/>
+          </div>
+          <div class="field">
+            <label>Their MAG tag <span class="opt">(optional)</span></label>
+            <input type="text" id="targetMag" placeholder="magnitude 1-9" maxlength="60" autocomplete="off"/>
+          </div>
+          <div class="field">
+            <label>Their photo <span class="opt">(optional)</span></label>
+            <div class="pfp-zone">
+              <input type="file" id="targetPfp" accept="image/png,image/jpeg,image/webp,image/gif"/>
+              <div class="pfp-placeholder" id="pfpPlaceholder">
+                <span>📷</span>
+                <p>Click to upload a photo</p>
+                <small>PNG · JPG · WEBP · Max 5MB</small>
+              </div>
+              <img id="pfpPreview" class="pfp-preview hidden" alt="Preview"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message -->
+        <div class="form-card">
+          <p class="form-card-title">Your confession</p>
+          <div class="field">
+            <label>Write from your heart <span class="req">*</span></label>
+            <textarea id="message" placeholder="Every time we vibe in the server I forget how to type. I've been wanting to say this for so long..." required maxlength="1000" rows="5"></textarea>
+            <div class="char-count"><span id="charCount">0</span> / 1000</div>
+          </div>
+        </div>
+
+        <!-- Error -->
+        <div id="errorMessage" class="banner-error hidden">
+          <span>⚠️</span> <span id="errorText">Something went wrong.</span>
+        </div>
+
+        <!-- Submit -->
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-full" id="submitBtn" style="max-width:320px">
+            <span id="btnText">Send Confession 💌</span>
+            <span id="btnLoading" class="hidden">Sending...</span>
+          </button>
+          <p class="privacy-note">🔒 Only the information you enter is stored.</p>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- ══ Feed Section ══ -->
+    <section class="page-section" id="section-feed">
+
+      <div class="feed-header">
+        <div>
+          <h2>Confessions Feed</h2>
+          <p>Brave, honest, and real — every single one.</p>
+        </div>
+        <button class="btn btn-outline" id="randomBtn">🎲 Random</button>
+      </div>
+
+      <div id="feedLoading" class="feed-loading">
+        <span>💖</span>
+        <p>Loading confessions...</p>
+      </div>
+      <div id="feedEmpty" class="feed-empty hidden">
+        <span>🌸</span>
+        <h3>Nothing here yet</h3>
+        <p>Be the first to say what's in your heart.</p>
+        <button class="btn btn-primary" onclick="showSection('submit', document.querySelector('.tab-btn'))">Write a Confession 💌</button>
+      </div>
+      <div id="feedError" class="feed-error hidden">
+        <p>⚠️ Couldn't load confessions. Check your connection and refresh.</p>
+      </div>
+      <div id="feedGrid" class="feed-list hidden" role="list"></div>
+
+    </section>
+
+  </div><!-- end page-wrapper -->
+
+  <!-- Confession Detail Modal -->
+  <div class="modal-overlay" id="confessionModal" style="display: none;">
+    <div class="confession-modal">
+      <button class="modal-close" onclick="closeConfessionModal()">✕</button>
+      <div class="modal-content">
+        <div class="modal-header-top">
+          <div class="modal-avatar-large">
+            <img id="modalAvatar" src="" alt="" />
+            <div id="modalAvatarFallback">💝</div>
+          </div>
+        </div>
+        <div class="modal-info">
+          <div id="modalName"></div>
+          <span id="modalMag"></span>
+          <span id="modalBadge"></span>
+        </div>
+        <blockquote id="modalMessage"></blockquote>
+        <div class="modal-rxn" id="modalReactions"></div>
+        <footer class="modal-foot">
+          <span id="modalFrom"></span>
+          <time id="modalTime"></time>
+          <button id="modalReport">🚩 Report</button>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card template -->
+  <template id="cardTemplate">
+    <article class="c-card" role="listitem">
+      <div class="c-top">
+        <div style="flex-shrink:0">
+          <img class="c-avatar" src="" alt="" loading="lazy"/>
+          <div class="c-avatar-fallback">💝</div>
+        </div>
+        <div class="c-info">
+          <div class="c-name"></div>
+          <span class="c-mag"></span>
+        </div>
+        <span class="c-badge"></span>
+      </div>
+      <blockquote class="c-msg"></blockquote>
+      <div class="c-rxn"></div>
+      <footer class="c-foot">
+        <span class="c-from"></span>
+        <time class="c-time"></time>
+        <button class="c-report">🚩 Report</button>
+      </footer>
+    </article>
+  </template>
+
+  <script>
+    // Tab switcher
+    function showSection(id, btn) {
+      document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('section-' + id).classList.add('active');
+      if (btn) btn.classList.add('active');
+      // Load feed when switching to it
+      if (id === 'feed' && window._feedLoaded !== true) {
+        window._feedLoaded = true;
+        if (window.loadFeed) window.loadFeed();
+      }
+    }
+
+    // Confession modal functions
+    function openConfessionModal(confessionId) {
+      if (window.openConfessionDetail) {
+        window.openConfessionDetail(confessionId);
+      }
+    }
+
+    function closeConfessionModal() {
+      document.getElementById('confessionModal').style.display = 'none';
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/submit.js"></script>
+  <script src="js/feed.js"></script>
+
+</body>
+</html>
