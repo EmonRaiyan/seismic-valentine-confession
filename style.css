@@ -6,7 +6,7 @@
 ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500&family=Lora:ital@0;1&display=swap');
 /* ── Tokens ──────────────────────────────────────────── */
 :root {
   --bg:        #f5f2ee;
@@ -859,8 +859,8 @@ body {
 }
 
 #modalMessage {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
+  font-family: 'Lora', serif;
+  font-style: normal;
   font-size: 1.1rem;
   line-height: 1.7;
   color: var(--text);
