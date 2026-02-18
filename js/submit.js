@@ -63,7 +63,11 @@
     const pfpFile    = pfpInput.files[0] || null;
 
     if (!targetName)      { showError("Please enter their name 💌"); return; }
+    if (!pfpFile)         { showError("Please upload their photo 📷"); return; }
     if (!message)         { showError("Confession message can't be empty 💬"); return; }
+    if (mode === "public" && !userName && !userMag) {
+  showError("Please enter your name or MAG tag for public confessions 🌊"); return;
+}
     if (message.length < 10) { showError("Write a little more — at least 10 characters."); return; }
     if (window.containsBadWords && (window.containsBadWords(message) || window.containsBadWords(targetName) || window.containsBadWords(userName))) {
       showError("Please keep it kind 🌸 — inappropriate language detected."); return;
